@@ -1,8 +1,8 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 import type { RootState } from '@app/store';
 
-export interface PostState {
+export interface Post {
   id: string;
   title: string;
   content: string;
@@ -16,7 +16,7 @@ export interface PostState {
   };
 }
 
-const initialState: PostState[] = [
+const initialState: Post[] = [
   {
     id: '1',
     title: 'Learning Redux Toolkit',
@@ -49,8 +49,25 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: (state, action) => {
-      state.push(action.payload);
+    postAdded: {
+      reducer: (state, action: PayloadAction<Post>) => {
+        state.push(action.payload);
+      },
+      prepare: (title, content) => ({
+        payload: {
+          id: nanoid(),
+          title,
+          content,
+          date: new Date().toISOString(),
+          reactions: {
+            thumbsUp: 0,
+            wow: 0,
+            heart: 0,
+            rocket: 0,
+            coffee: 0
+          }
+        }
+      })
     }
   }
 });
