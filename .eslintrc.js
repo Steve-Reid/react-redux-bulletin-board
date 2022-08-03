@@ -29,6 +29,12 @@ module.exports = {
     'no-var': 'off',
     'prefer-destructuring': 'off',
     'prettier/prettier': 'off',
+    'jsx-a11y/label-has-associated-control': [
+      'warn',
+      {
+        assert: 'either'
+      }
+    ],
     'react/function-component-definition': [
       'warn',
       {
