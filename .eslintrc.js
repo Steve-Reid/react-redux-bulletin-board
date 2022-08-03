@@ -29,6 +29,12 @@ module.exports = {
     'no-var': 'off',
     'prefer-destructuring': 'off',
     'prettier/prettier': 'off',
+    'react/function-component-definition': [
+      'warn',
+      {
+        namedComponents: 'arrow-function'
+      }
+    ],
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
