@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '@/app/hooks';
 import { selectAllPosts } from '@posts/postsSlice';
+import PostAuthor from './PostAuthor';
 
 const PostList = () => {
   const posts = useAppSelector(selectAllPosts);
@@ -13,11 +14,11 @@ const PostList = () => {
     <article key={post.id}>
       <h3>{post.title}</h3>
       <p>{post.content.substring(0, 100)}</p>
-      {/* <p className="postCredit">
+      <p className="postCredit">
         <PostAuthor userId={post.userId} />
-        <TimeAgo timestamp={post.date} />
+        {/* <TimeAgo timestamp={post.date} /> */}
       </p>
-      <ReactionButtons post={post} /> */}
+      {/* <ReactionButtons post={post} /> */}
     </article>
   ));
 

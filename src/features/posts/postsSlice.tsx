@@ -7,6 +7,7 @@ export interface Post {
   title: string;
   content: string;
   date: string;
+  userId: string;
   reactions: {
     thumbsUp: number;
     wow: number;
@@ -22,6 +23,7 @@ const initialState: Post[] = [
     title: 'Learning Redux Toolkit',
     content: "I've heard good things.",
     date: sub(new Date(), { minutes: 10 }).toISOString(),
+    userId: '1',
     reactions: {
       thumbsUp: 0,
       wow: 0,
@@ -35,6 +37,7 @@ const initialState: Post[] = [
     title: 'Slices...',
     content: 'The more I say slice, the more I want pizza.',
     date: sub(new Date(), { minutes: 5 }).toISOString(),
+    userId: '2',
     reactions: {
       thumbsUp: 0,
       wow: 0,
@@ -53,12 +56,13 @@ const postsSlice = createSlice({
       reducer: (state, action: PayloadAction<Post>) => {
         state.push(action.payload);
       },
-      prepare: (title, content) => ({
+      prepare: (title, content, userId) => ({
         payload: {
           id: nanoid(),
           title,
           content,
           date: new Date().toISOString(),
+          userId,
           reactions: {
             thumbsUp: 0,
             wow: 0,

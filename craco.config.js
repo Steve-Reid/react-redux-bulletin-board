@@ -8,7 +8,8 @@ module.exports = {
       '@app': path.resolve(__dirname, './src/app/'),
       '@features': path.resolve(__dirname, './src/features/'),
       '@pages': path.resolve(__dirname, './src/pages/'),
-      '@posts': path.resolve(__dirname, './src/features/posts')
+      '@posts': path.resolve(__dirname, './src/features/posts'),
+      '@users': path.resolve(__dirname, './src/features/users')
     }
   }
 };

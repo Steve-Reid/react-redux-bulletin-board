@@ -20,6 +20,9 @@
     "@posts/*": [
       "./src/features/posts/*"
     ],
+    "@users/*": [
+      "./src/features/users/*"
+    ],
   },
   }
 }

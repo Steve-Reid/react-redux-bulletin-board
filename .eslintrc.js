@@ -29,6 +29,7 @@ module.exports = {
     'no-var': 'off',
     'prefer-destructuring': 'off',
     'prettier/prettier': 'off',
+    'jsx-a11y/control-has-associated-label)': 'off',
     'jsx-a11y/label-has-associated-control': [
       'warn',
       {
