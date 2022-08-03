@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-// import { useAppSelector } from '@app/hooks';
+import { nanoid } from 'nanoid';
+import { useAppDispatch } from '@app/hooks';
+import { postAdded } from '@posts/postsSlice';
 
 const AddPostForm = () => {
+  const dispatch = useAppDispatch();
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   // const [userId, setUserId] = useState('');
@@ -15,13 +19,20 @@ const AddPostForm = () => {
   // const onAuthorChanged = (e: React.ChangeEvent<HTMLSelectElement>) =>
   //   setUserId(e.target.value);
 
-  // const onSavePostClicked = () => {
-  //   if (title && content) {
-  //     dispatch(postAdded(title, content, userId));
-  //     setTitle('');
-  //     setContent('');
-  //   }
-  // };
+  const onSavePostClicked = () => {
+    if (title && content) {
+      dispatch(
+        postAdded({
+          id: nanoid(),
+          title,
+          content
+        })
+      );
+
+      setTitle('');
+      setContent('');
+    }
+  };
 
   // const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
@@ -57,7 +68,7 @@ const AddPostForm = () => {
         />
         <button
           type="button"
-          // onClick={onSavePostClicked}
+          onClick={onSavePostClicked}
           // disabled={!canSave}
         >
           Save Post
