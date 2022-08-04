@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useAppSelector } from '@app/hooks';
-import { selectAllUsers } from '@users/usersSlice';
+import { selectAllUsers } from '@features/users/usersSlice';
 
 interface PostAuthorProps {
   userId: string;

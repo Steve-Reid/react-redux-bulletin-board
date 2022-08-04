@@ -1,4 +1,4 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@app/store';
 
 export interface User {
@@ -7,9 +7,9 @@ export interface User {
 }
 
 const initialState: User[] = [
-  { id: '0', name: 'Dude Lebowski' },
-  { id: '1', name: 'Neil Young' },
-  { id: '2', name: 'Dave Gray' }
+  { id: '0', name: 'Arty Fischel' },
+  { id: '1', name: 'Harry Balzack' },
+  { id: '2', name: 'Steve Reid' }
 ];
 
 const usersSlice = createSlice({

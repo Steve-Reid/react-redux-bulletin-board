@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
-import { postAdded } from '@posts/postsSlice';
-import { selectAllUsers } from '@users/usersSlice';
+import { postAdded } from '@features/posts/postsSlice';
+import { selectAllUsers } from '@features/users/usersSlice';
 
 const AddPostForm = () => {
   const dispatch = useAppDispatch();

@@ -11,5 +11,17 @@ module.exports = {
       '@posts': path.resolve(__dirname, './src/features/posts'),
       '@users': path.resolve(__dirname, './src/features/users')
     }
+  },
+  jest: {
+    configure: {
+      moduleNameMapper: {
+        '^@components(.*)$': '<rootDir>/src/components$1',
+        '^@app(.*)$': '<rootDir>/src/app$1',
+        '^@features(.*)$': '<rootDir>/src/features$1',
+        '^@pages(.*)$': '<rootDir>/src/pages$1',
+        '^@posts(.*)$': '<rootDir>/src/features/posts$1',
+        '^@users(.*)$': '<rootDir>/src/features/users$1'
+      }
+    }
   }
 };

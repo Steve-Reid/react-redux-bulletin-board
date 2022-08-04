@@ -2,19 +2,26 @@ import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 import type { RootState } from '@app/store';
 
+type PostReactions = {
+  thumbsUp: number;
+  wow: number;
+  heart: number;
+  rocket: number;
+  coffee: number;
+};
+
 export interface Post {
   id: string;
   title: string;
   content: string;
   date: string;
   userId: string;
-  reactions: {
-    thumbsUp: number;
-    wow: number;
-    heart: number;
-    rocket: number;
-    coffee: number;
-  };
+  reactions: PostReactions;
+}
+
+interface Reaction {
+  postId: string;
+  reaction: string;
 }
 
 const initialState: Post[] = [
@@ -72,12 +79,19 @@ const postsSlice = createSlice({
           }
         }
       })
+    },
+    reactionAdded: (state, action: PayloadAction<Reaction>) => {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find(post => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction as keyof PostReactions] += 1;
+      }
     }
   }
 });
 
 export const selectAllPosts = (state: RootState) => state.posts;
 
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
