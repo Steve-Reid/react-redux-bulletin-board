@@ -19,41 +19,22 @@ export interface Post {
   reactions: PostReactions;
 }
 
+export interface PostsState {
+  posts: Post[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: null;
+}
+
 interface Reaction {
   postId: string;
   reaction: string;
 }
 
-const initialState: Post[] = [
-  {
-    id: '1',
-    title: 'Learning Redux Toolkit',
-    content: "I've heard good things.",
-    date: sub(new Date(), { minutes: 10 }).toISOString(),
-    userId: '1',
-    reactions: {
-      thumbsUp: 0,
-      wow: 0,
-      heart: 0,
-      rocket: 0,
-      coffee: 0
-    }
-  },
-  {
-    id: '2',
-    title: 'Slices...',
-    content: 'The more I say slice, the more I want pizza.',
-    date: sub(new Date(), { minutes: 5 }).toISOString(),
-    userId: '2',
-    reactions: {
-      thumbsUp: 0,
-      wow: 0,
-      heart: 0,
-      rocket: 0,
-      coffee: 0
-    }
-  }
-];
+const initialState: PostsState = {
+  posts: [],
+  status: 'idle',
+  error: null
+};
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -61,7 +42,7 @@ const postsSlice = createSlice({
   reducers: {
     postAdded: {
       reducer: (state, action: PayloadAction<Post>) => {
-        state.push(action.payload);
+        state.posts.push(action.payload);
       },
       prepare: (title, content, userId) => ({
         payload: {
@@ -82,7 +63,7 @@ const postsSlice = createSlice({
     },
     reactionAdded: (state, action: PayloadAction<Reaction>) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.find(post => post.id === postId);
+      const existingPost = state.posts.find(post => post.id === postId);
       if (existingPost) {
         existingPost.reactions[reaction as keyof PostReactions] += 1;
       }
@@ -90,7 +71,7 @@ const postsSlice = createSlice({
   }
 });
 
-export const selectAllPosts = (state: RootState) => state.posts;
+export const selectAllPosts = (state: RootState) => state.posts.posts;
 
 export const { postAdded, reactionAdded } = postsSlice.actions;
 

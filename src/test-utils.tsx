@@ -2,8 +2,9 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { getStoreWithState, RootState } from './app/store';
-import { Post } from './features/posts/postsSlice';
+import { PostsState } from './features/posts/postsSlice';
 import { User } from './features/users/usersSlice';
+import { mockPosts } from './utils/fixtures/mockPosts';
 
 export function renderWithContext(
   element: React.ReactElement,
@@ -16,7 +17,11 @@ export function renderWithContext(
 
 export function getStateWithItems(
   users: User[],
-  posts: Post[] = []
+  posts: PostsState = {
+    status: 'idle',
+    error: null,
+    posts: mockPosts
+  }
 ): RootState {
   const state: RootState = {
     posts,

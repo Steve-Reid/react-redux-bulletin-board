@@ -4,7 +4,16 @@ import { renderWithContext } from '../../../test-utils';
 import { mockPosts } from '../../../utils/fixtures/mockPosts';
 
 test('should list several posts', () => {
-  renderWithContext(<PostList />);
+  const state = {
+    users: [],
+    posts: {
+      status: 'idle',
+      error: null,
+      posts: mockPosts
+    }
+  };
+
+  renderWithContext(<PostList />, state);
   const articles = screen.getAllByRole('article');
   expect(articles.length).toEqual(mockPosts.length);
 });
