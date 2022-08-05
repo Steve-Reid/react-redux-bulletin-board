@@ -1,10 +1,11 @@
 import { screen } from '@testing-library/react';
+import { RootState } from '../../../app/store';
 import PostList from '../../../components/PostList';
 import { renderWithContext } from '../../../test-utils';
 import { mockPosts } from '../../../utils/fixtures/mockPosts';
 
 test('should list several posts', () => {
-  const state = {
+  const state: RootState = {
     users: [],
     posts: {
       status: 'idle',

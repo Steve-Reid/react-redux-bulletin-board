@@ -1,12 +1,27 @@
-import React from 'react';
-import { useAppSelector } from '@app/hooks';
-import { selectAllPosts } from '@features/posts/postsSlice';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@app/hooks';
+import {
+  fetchPosts,
+  getPostsError,
+  getPostsStatus,
+  selectAllPosts
+} from '@features/posts/postsSlice';
 import PostAuthor from './PostAuthor';
 import TimeAgo from './TimeAgo';
 import ReactionButtons from './ReactionButtons';
 
 const PostList = () => {
+  const dispatch = useAppDispatch();
+
   const posts = useAppSelector(selectAllPosts);
+  const postStatus = useAppSelector(getPostsStatus);
+  const error = useAppSelector(getPostsError);
+
+  useEffect(() => {
+    if (postStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
 
   const orderedPosts = posts
     .slice()
