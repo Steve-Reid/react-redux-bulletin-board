@@ -17,6 +17,9 @@
     "@pages/*": [
       "./src/pages/*"
     ],
+    "@utils/*": [
+      "./src/utils/*"
+    ],
     "@posts/*": [
       "./src/features/posts/*"
     ],

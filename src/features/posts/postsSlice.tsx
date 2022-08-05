@@ -7,8 +7,9 @@ import {
 import { sub } from 'date-fns';
 import axios from 'axios';
 import type { RootState } from '@app/store';
+import { BASE_URL } from '@utils/contstants';
 
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
+const POSTS_URL = `${BASE_URL}/posts`;
 
 type PostReactions = {
   thumbsUp: number;

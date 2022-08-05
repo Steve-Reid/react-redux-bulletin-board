@@ -8,6 +8,7 @@ module.exports = {
       '@app': path.resolve(__dirname, './src/app/'),
       '@features': path.resolve(__dirname, './src/features/'),
       '@pages': path.resolve(__dirname, './src/pages/'),
+      '@utils': path.resolve(__dirname, './src/utils/'),
       '@posts': path.resolve(__dirname, './src/features/posts'),
       '@users': path.resolve(__dirname, './src/features/users')
     }
@@ -19,6 +20,7 @@ module.exports = {
         '^@app(.*)$': '<rootDir>/src/app$1',
         '^@features(.*)$': '<rootDir>/src/features$1',
         '^@pages(.*)$': '<rootDir>/src/pages$1',
+        '^@utils(.*)$': '<rootDir>/src/utils$1',
         '^@posts(.*)$': '<rootDir>/src/features/posts$1',
         '^@users(.*)$': '<rootDir>/src/features/users$1'
       }
