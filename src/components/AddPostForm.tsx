@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
-import { postAdded } from '@features/posts/postsSlice';
+import { addNewPost } from '@features/posts/postsSlice';
 import { selectAllUsers } from '@features/users/usersSlice';
 
 const AddPostForm = () => {
@@ -8,7 +8,10 @@ const AddPostForm = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(0);
+  const [addRequestStatus, setAddRequestStatus] = useState<'pending' | 'idle'>(
+    'idle'
+  );
 
   const users = useAppSelector(selectAllUsers);
 
@@ -17,19 +20,27 @@ const AddPostForm = () => {
   const onContentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setContent(e.target.value);
   const onAuthorChanged = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setUserId(e.target.value);
+    setUserId(Number(e.target.value));
+
+  const canSave =
+    [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
 
   const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postAdded(title, content, userId));
+    if (canSave) {
+      try {
+        setAddRequestStatus('pending');
+        dispatch(addNewPost({ title, body: content, userId })).unwrap();
 
-      setTitle('');
-      setContent('');
-      setUserId('');
+        setTitle('');
+        setContent('');
+        setUserId(0);
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      } finally {
+        setAddRequestStatus('idle');
+      }
     }
   };
-
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
   const usersOptions = users.map(user => (
     <option key={user.id} value={user.id}>

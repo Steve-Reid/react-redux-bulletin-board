@@ -24,7 +24,7 @@ export interface Post {
   title: string;
   body: string;
   date: string;
-  userId: string;
+  userId: number;
   reactions: PostReactions;
 }
 
@@ -39,6 +39,14 @@ interface Reaction {
   reaction: string;
 }
 
+interface PostToAdd {
+  title: string;
+
+  body: string;
+
+  userId: number;
+}
+
 const initialState: PostsState = {
   posts: [],
   status: 'idle',
@@ -46,9 +54,18 @@ const initialState: PostsState = {
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  // Don't use TryCatch here as it needs to throw the error for createAsyncThunk to handle
   const response = await axios.get(POSTS_URL);
   return response.data;
 });
+
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost: PostToAdd) => {
+    const response = await axios.post(POSTS_URL, initialPost);
+    return response.data;
+  }
+);
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -110,6 +127,20 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action: PayloadAction<Post>) => {
+        action.payload.id = state.posts[state.posts.length - 1].id + 1;
+        action.payload.userId = Number(action.payload.userId);
+        action.payload.date = new Date().toISOString();
+        action.payload.reactions = {
+          thumbsUp: 0,
+          wow: 0,
+          heart: 0,
+          rocket: 0,
+          coffee: 0
+        };
+        console.log(action.payload);
+        state.posts.push(action.payload);
       });
   }
 });

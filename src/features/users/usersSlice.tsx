@@ -6,7 +6,7 @@ import { BASE_URL } from '@utils/contstants';
 const USERS_URL = `${BASE_URL}/users`;
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
 }
 

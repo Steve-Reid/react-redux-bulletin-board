@@ -7,7 +7,7 @@ export const mockPosts: Post[] = [
     title: 'Learning Redux Toolkit',
     body: "I've heard good things.",
     date: sub(new Date(), { minutes: 10 }).toISOString(),
-    userId: '1',
+    userId: 1,
     reactions: {
       thumbsUp: 0,
       wow: 0,
@@ -21,7 +21,7 @@ export const mockPosts: Post[] = [
     title: 'Slices...',
     body: 'The more I say slice, the more I want pizza.',
     date: sub(new Date(), { minutes: 5 }).toISOString(),
-    userId: '2',
+    userId: 2,
     reactions: {
       thumbsUp: 0,
       wow: 0,
