@@ -25,7 +25,7 @@ describe('posts reducer', () => {
     };
     const action = postAdded(
       mockPosts[0].title,
-      mockPosts[0].content,
+      mockPosts[0].body,
       mockPosts[0].userId
     );
     const result = postsReducer(initialState, action);

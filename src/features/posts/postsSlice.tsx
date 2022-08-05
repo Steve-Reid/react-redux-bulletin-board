@@ -21,7 +21,7 @@ type PostReactions = {
 export interface Post {
   id: string;
   title: string;
-  content: string;
+  body: string;
   date: string;
   userId: string;
   reactions: PostReactions;
@@ -61,7 +61,7 @@ const postsSlice = createSlice({
         payload: {
           id: nanoid(),
           title,
-          content,
+          body: content,
           date: new Date().toISOString(),
           userId,
           reactions: {
@@ -104,7 +104,7 @@ const postsSlice = createSlice({
         });
 
         // Add any fetched posts to the array
-        state.posts = state.posts.concat(loadedPosts);
+        state.posts = loadedPosts;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';

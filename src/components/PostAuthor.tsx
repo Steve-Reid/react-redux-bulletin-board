@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { useAppSelector } from '@app/hooks';
 import { selectAllUsers } from '@features/users/usersSlice';
 
