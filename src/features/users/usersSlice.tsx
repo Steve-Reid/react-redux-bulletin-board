@@ -10,6 +10,8 @@ export interface User {
   name: string;
 }
 
+export type UsersState = User[];
+
 const initialState: User[] = [];
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {

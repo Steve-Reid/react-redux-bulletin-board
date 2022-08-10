@@ -1,9 +1,9 @@
+import { mockPosts } from '@utils/fixtures/mockPosts';
 import postsReducer, {
   PostsState,
   postAdded,
   reactionAdded
-} from '../../../features/posts/postsSlice';
-import { mockPosts } from '../../../utils/fixtures/mockPosts';
+} from '../../../../features/posts/postsSlice';
 
 describe('posts reducer', () => {
   test('should return the initial state when passed an empty action', () => {
@@ -19,7 +19,7 @@ describe('posts reducer', () => {
 
   test('should add a post to state', () => {
     const initialState: PostsState = {
-      status: 'idle',
+      status: 'succeeded',
       error: null,
       posts: []
     };
@@ -35,7 +35,7 @@ describe('posts reducer', () => {
 
   test('should increment reaction count of a post in state', () => {
     const initialState: PostsState = {
-      status: 'idle',
+      status: 'succeeded',
       error: null,
       posts: [{ ...mockPosts[0] }]
     };

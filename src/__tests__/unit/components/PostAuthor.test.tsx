@@ -10,7 +10,7 @@ test('should display the post author name', () => {
 });
 
 test('should display "Unknown author", when userId not found', () => {
-  const userId = '999';
+  const userId = 999;
   renderWithContext(<PostAuthor userId={userId} />);
   screen.findByText('Unknown author');
 });

@@ -5,6 +5,7 @@ import { getStoreWithState, RootState } from './app/store';
 import { PostsState } from './features/posts/postsSlice';
 import { User } from './features/users/usersSlice';
 import { mockPosts } from './utils/fixtures/mockPosts';
+import { mockUsers } from './utils/fixtures/mockUsers';
 
 export function renderWithContext(
   element: React.ReactElement,
@@ -16,7 +17,7 @@ export function renderWithContext(
 }
 
 export function getStateWithItems(
-  users: User[],
+  users: User[] = mockUsers,
   posts: PostsState = {
     status: 'idle',
     error: null,
