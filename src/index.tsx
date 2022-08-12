@@ -6,11 +6,13 @@ import { fetchUsers } from '@users/usersSlice';
 import { store } from './app/store';
 import App from './App';
 import './index.css';
+import { fetchPosts } from './features/posts/postsSlice';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 store.dispatch(fetchUsers());
+store.dispatch(fetchPosts());
 
 root.render(
   <React.StrictMode>

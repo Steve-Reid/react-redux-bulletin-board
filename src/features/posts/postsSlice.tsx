@@ -3,6 +3,7 @@ import { sub } from 'date-fns';
 import axios from 'axios';
 import type { RootState } from '@app/store';
 import { BASE_URL } from '@utils/contstants';
+import getNextPostId from '@utils/getNextPostId';
 
 const POSTS_URL = `${BASE_URL}/posts`;
 
@@ -78,6 +79,22 @@ export const updatePost = createAsyncThunk(
       const response = await axios.put(`${POSTS_URL}/${id}`, initialPost);
       return response.data;
     } catch (err: any) {
+      // return err.message;
+      return initialPost; // only for testing Redux!
+    }
+  }
+);
+
+export const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async (initialPost: { id: number }) => {
+    const { id } = initialPost;
+    try {
+      const response = await axios.delete(`${POSTS_URL}/${id}`);
+      // this logic is specific to the use JSONPlaceholder
+      if (response?.status === 200) return initialPost;
+      return `${response?.status}: ${response?.statusText}`;
+    } catch (err: any) {
       return err.message;
     }
   }
@@ -145,7 +162,7 @@ const postsSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(addNewPost.fulfilled, (state, action: PayloadAction<Post>) => {
-        action.payload.id = state.posts[state.posts.length - 1].id + 1;
+        action.payload.id = getNextPostId(state.posts);
         action.payload.userId = Number(action.payload.userId);
         action.payload.date = new Date().toISOString();
         action.payload.reactions = {
@@ -156,6 +173,8 @@ const postsSlice = createSlice({
           coffee: 0
         };
         console.log(action.payload);
+        console.log('Number of posts', state.posts.length);
+
         state.posts.push(action.payload);
       })
       .addCase(updatePost.fulfilled, (state, action: PayloadAction<Post>) => {
@@ -168,6 +187,16 @@ const postsSlice = createSlice({
         action.payload.date = new Date().toISOString();
         const posts = state.posts.filter(post => post.id !== id);
         state.posts = [...posts, action.payload];
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        if (!action.payload?.id) {
+          console.log('Delete could not complete');
+          console.log(action.payload);
+          return;
+        }
+        const { id } = action.payload;
+        const posts = state.posts.filter(post => post.id !== id);
+        state.posts = posts;
       });
   }
 });
