@@ -20,7 +20,7 @@ type PostReactions = {
 };
 
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   body: string;
   date: string;
@@ -35,7 +35,7 @@ export interface PostsState {
 }
 
 interface Reaction {
-  postId: string;
+  postId: number;
   reaction: string;
 }
 
@@ -77,7 +77,7 @@ const postsSlice = createSlice({
       },
       prepare: (title, content, userId) => ({
         payload: {
-          id: nanoid(),
+          id: Math.floor(Math.random() * 10000),
           title,
           body: content,
           date: new Date().toISOString(),
@@ -148,6 +148,9 @@ const postsSlice = createSlice({
 export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const getPostsStatus = (state: RootState) => state.posts.status;
 export const getPostsError = (state: RootState) => state.posts.error;
+
+export const selectPostById = (state: RootState, postId: number) =>
+  state.posts.posts.find(post => post.id === postId);
 
 export const { postAdded, reactionAdded } = postsSlice.actions;
 

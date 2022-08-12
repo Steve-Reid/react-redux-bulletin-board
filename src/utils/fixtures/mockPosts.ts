@@ -3,7 +3,7 @@ import { Post } from '../../features/posts/postsSlice';
 
 export const mockPosts: Post[] = [
   {
-    id: '1',
+    id: 1,
     title: 'Learning Redux Toolkit',
     body: "I've heard good things.",
     date: sub(new Date(), { minutes: 10 }).toISOString(),
@@ -17,7 +17,7 @@ export const mockPosts: Post[] = [
     }
   },
   {
-    id: '2',
+    id: 2,
     title: 'Slices...',
     body: 'The more I say slice, the more I want pizza.',
     date: sub(new Date(), { minutes: 5 }).toISOString(),
