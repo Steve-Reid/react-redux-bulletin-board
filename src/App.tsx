@@ -4,6 +4,7 @@ import AddPostForm from '@components/AddPostForm';
 import { Route, Routes } from 'react-router-dom';
 import Layout from '@components/Layout';
 import SinglePostPage from '@pages/SinglePostPage';
+import EditPostForm from '@components/EditPostForm';
 
 const App = () => (
   <Routes>
@@ -13,6 +14,7 @@ const App = () => (
       <Route path="post">
         <Route index element={<AddPostForm />} />
         <Route path=":postId" element={<SinglePostPage />} />
+        <Route path="edit/:postId" element={<EditPostForm />} />
       </Route>
     </Route>
   </Routes>

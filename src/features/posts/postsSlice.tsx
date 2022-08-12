@@ -1,15 +1,18 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  nanoid,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 import axios from 'axios';
 import type { RootState } from '@app/store';
 import { BASE_URL } from '@utils/contstants';
 
 const POSTS_URL = `${BASE_URL}/posts`;
+
+type UpdatePost = {
+  id: number;
+  title: string | undefined;
+  body: string | undefined;
+  userId: number | undefined;
+  reactions: PostReactions;
+};
 
 type PostReactions = {
   thumbsUp: number;
@@ -64,6 +67,19 @@ export const addNewPost = createAsyncThunk(
   async (initialPost: PostToAdd) => {
     const response = await axios.post(POSTS_URL, initialPost);
     return response.data;
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  'posts/updatePost',
+  async (initialPost: UpdatePost) => {
+    const { id } = initialPost;
+    try {
+      const response = await axios.put(`${POSTS_URL}/${id}`, initialPost);
+      return response.data;
+    } catch (err: any) {
+      return err.message;
+    }
   }
 );
 
@@ -141,6 +157,17 @@ const postsSlice = createSlice({
         };
         console.log(action.payload);
         state.posts.push(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, action: PayloadAction<Post>) => {
+        if (!action.payload?.id) {
+          console.log('Update could not complete');
+          console.log(action.payload);
+          return;
+        }
+        const { id } = action.payload;
+        action.payload.date = new Date().toISOString();
+        const posts = state.posts.filter(post => post.id !== id);
+        state.posts = [...posts, action.payload];
       });
   }
 });
