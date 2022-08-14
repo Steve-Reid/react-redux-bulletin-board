@@ -26,7 +26,8 @@ export function getStateWithItems(
   posts: PostsState = {
     status: 'idle',
     error: null,
-    posts: mockPosts
+    posts: mockPosts,
+    count: 0
   }
 ): RootState {
   const state: RootState = {

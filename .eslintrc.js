@@ -27,6 +27,7 @@ module.exports = {
   },
   rules: {
     'no-var': 'off',
+    'operator-assignment': 'off',
     'prefer-destructuring': 'off',
     'prettier/prettier': 'off',
     'jsx-a11y/control-has-associated-label)': 'off',

@@ -10,7 +10,8 @@ test('should list several posts', async () => {
     posts: {
       status: 'succeeded',
       error: null,
-      posts: mockPosts
+      posts: mockPosts,
+      count: 0
     }
   };
 
