@@ -2,15 +2,20 @@ import {
   createSlice,
   createAsyncThunk,
   PayloadAction,
-  createSelector
+  createSelector,
+  createEntityAdapter
 } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 import axios from 'axios';
 import type { RootState } from '@app/store';
 import { BASE_URL } from '@utils/contstants';
-import getNextPostId from '@utils/getNextPostId';
+import getNextId from '@/utils/getNextId';
 
 const POSTS_URL = `${BASE_URL}/posts`;
+
+const postsAdapter = createEntityAdapter<Post>({
+  sortComparer: (a, b) => b.date.localeCompare(a.date)
+});
 
 type UpdatePost = {
   id: number;
@@ -57,12 +62,11 @@ interface PostToAdd {
   userId: number;
 }
 
-const initialState: PostsState = {
-  posts: [],
-  status: 'idle',
-  error: null,
+const initialState = postsAdapter.getInitialState({
+  status: 'idle' as 'idle' | 'loading' | 'succeeded' | 'failed',
+  error: '',
   count: 0
-};
+});
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   // Don't use TryCatch here as it needs to throw the error for createAsyncThunk to handle
@@ -113,7 +117,7 @@ const postsSlice = createSlice({
   reducers: {
     reactionAdded: (state, action: PayloadAction<Reaction>) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find(post => post.id === postId);
+      const existingPost = state.entities[postId];
       if (existingPost) {
         existingPost.reactions[reaction as keyof PostReactions] += 1;
       }
@@ -144,14 +148,14 @@ const postsSlice = createSlice({
         });
 
         // Add any fetched posts to the array
-        state.posts = loadedPosts;
+        postsAdapter.upsertMany(state, loadedPosts);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message || '';
       })
       .addCase(addNewPost.fulfilled, (state, action: PayloadAction<Post>) => {
-        action.payload.id = getNextPostId(state.posts);
+        action.payload.id = getNextId(state.ids as number[]);
         action.payload.userId = Number(action.payload.userId);
         action.payload.date = new Date().toISOString();
         action.payload.reactions = {
@@ -162,9 +166,8 @@ const postsSlice = createSlice({
           coffee: 0
         };
         console.log(action.payload);
-        console.log('Number of posts', state.posts.length);
 
-        state.posts.push(action.payload);
+        postsAdapter.addOne(state, action.payload);
       })
       .addCase(updatePost.fulfilled, (state, action: PayloadAction<Post>) => {
         if (!action.payload?.id) {
@@ -172,10 +175,8 @@ const postsSlice = createSlice({
           console.log(action.payload);
           return;
         }
-        const { id } = action.payload;
         action.payload.date = new Date().toISOString();
-        const posts = state.posts.filter(post => post.id !== id);
-        state.posts = [...posts, action.payload];
+        postsAdapter.upsertOne(state, action.payload);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         if (!action.payload?.id) {
@@ -184,19 +185,24 @@ const postsSlice = createSlice({
           return;
         }
         const { id } = action.payload;
-        const posts = state.posts.filter(post => post.id !== id);
-        state.posts = posts;
+        postsAdapter.removeOne(state, id);
       });
   }
 });
 
-export const selectAllPosts = (state: RootState) => state.posts.posts;
+// export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const getPostsStatus = (state: RootState) => state.posts.status;
 export const getPostsError = (state: RootState) => state.posts.error;
 export const getCount = (state: RootState) => state.posts.count;
 
-export const selectPostById = (state: RootState, postId: number) =>
-  state.posts.posts.find(post => post.id === postId);
+// export const selectPostById = (state: RootState, postId: number) =>
+//   state.posts.posts.find(post => post.id === postId);
+
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostIds
+} = postsAdapter.getSelectors((state: RootState) => state.posts);
 
 export const selectPostsByUser = createSelector(
   // memoized selector

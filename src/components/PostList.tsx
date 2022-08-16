@@ -3,12 +3,13 @@ import { useAppSelector } from '@app/hooks';
 import {
   getPostsError,
   getPostsStatus,
-  selectAllPosts
+  selectAllPosts,
+  selectPostIds
 } from '@features/posts/postsSlice';
 import PostExcerpt from './PostExcerpt';
 
 const PostList = () => {
-  const posts = useAppSelector(selectAllPosts);
+  const orderedPostIds = useAppSelector(selectPostIds);
   const postStatus = useAppSelector(getPostsStatus);
   const error = useAppSelector(getPostsError);
 
@@ -16,11 +17,8 @@ const PostList = () => {
   if (postStatus === 'loading') {
     content = <p>&ldquo;Loading...`&ldquo;`</p>;
   } else if (postStatus === 'succeeded') {
-    const orderedPosts = posts
-      .slice()
-      .sort((a, b) => b.date.localeCompare(a.date));
-    content = orderedPosts.map(post => (
-      <PostExcerpt key={post.id} post={post} />
+    content = orderedPostIds.map(postId => (
+      <PostExcerpt key={postId} postId={postId} />
     ));
   } else if (postStatus === 'failed') {
     content = <p>{error}</p>;

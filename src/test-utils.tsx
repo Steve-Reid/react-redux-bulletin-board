@@ -21,18 +21,18 @@ export function renderWithContext(
   return { store, ...utils };
 }
 
-export function getStateWithItems(
-  users: User[] = mockUsers,
-  posts: PostsState = {
-    status: 'idle',
-    error: null,
-    posts: mockPosts,
-    count: 0
-  }
-): RootState {
-  const state: RootState = {
-    posts,
-    users
-  };
-  return state;
-}
+// export function getStateWithItems(
+//   users: User[] = mockUsers,
+//   posts: PostsState = {
+//     status: 'idle',
+//     error: null,
+//     posts: mockPosts,
+//     count: 0
+//   }
+// ): RootState {
+//   const state: RootState = {
+//     posts
+//     users
+//   };
+//   return state;
+// }
